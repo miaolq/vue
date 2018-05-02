@@ -28,6 +28,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
       )
     }
   }
+  // 配置config的getter setter
   Object.defineProperty(Vue, 'config', configDef)
 
   // exposed util methods.
@@ -45,18 +46,23 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.nextTick = nextTick
 
   Vue.options = Object.create(null)
+  // 'components','directives','filters' 全局组件、指令、过滤器存放在Vue.options中
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
 
   // this is used to identify the "base" constructor to extend all plain-object
   // components with in Weex's multi-instance scenarios.
+  // Weex相关？
   Vue.options._base = Vue
 
+  // 放入内置组件keep-alive
   extend(Vue.options.components, builtInComponents)
 
+  // use方法初始化，用于加载插件
   initUse(Vue)
   initMixin(Vue)
   initExtend(Vue)
+  // 初始化Vue的component、directive、filter方法
   initAssetRegisters(Vue)
 }
